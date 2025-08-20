@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifikasi Resmi - Website Telah Pindah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .notification-container {
+            background: rgba(30, 30, 46, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: container-appear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: scale(0.8);
+            opacity: 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .notification-header {
+            background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 100%);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .notification-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0)
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        .notification-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .notification-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .notification-content {
+            padding: 30px;
+        }
+        
+        .notification-icon {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .notification-icon svg {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+        }
+        
+        .notification-message {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #8e2de2;
+        }
+        
+        .notification-message h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #a78bfa;
+        }
+        
+        .notification-message p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .note-box {
+            background: rgba(142, 45, 226, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid #ff55ff;
+            margin-top: 20px;
+        }
+        
+        .note-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #ff55ff;
+            display: flex;
+            align-items: center;
+        }
+        
+        .note-box h3::before {
+            content: '📝';
+            margin-right: 8px;
+        }
+        
+        .note-box p {
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
+        .notification-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        #redirectButton {
+            background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(142, 45, 226, 0.4);
+            position: relative;
+            overflow: hidden;
+            outline: none;
+        }
+        
+        #redirectButton:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.6);
+        }
+        
+        #redirectButton:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(142, 45, 226, 0.4);
+        }
+        
+        #redirectButton::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        #redirectButton:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .countdown {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @keyframes container-appear {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes shine {
+            0% {
+                transform: rotate(30deg) translate(-10%, -10%);
+            }
+            100% {
+                transform: rotate(30deg) translate(100%, 100%);
+            }
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(50, 50);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .notification-container {
+                width: 95%;
+            }
+            
+            .notification-content {
+                padding: 20px;
+            }
+            
+            .notification-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-container">
+        <div class="notification-header">
+            <h1>PEMBERITAHUAN RESMI</h1>
+            <p>Website telah mengalami perubahan</p>
+        </div>
+        
+        <div class="notification-content">
+            <div class="notification-icon">
+                <svg viewBox="0 0 24 24" width="80" height="80" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            
+            <div class="notification-message">
+                <h2>Website Telah Pindah Alamat</h2>
+                <p>Kami dengan senang hati memberitahukan bahwa website kami sekarang telah pindah ke alamat baru yang lebih aman dan nyaman.</p>
+                <p>Alamat baru: <strong>https://omomokiweb.sytes.net</strong></p>
+                
+                <div class="note-box">
+                    <h3>Nota dari Ardan:</h3>
+                    <p>"Ini official notifikasi, jangan takut phising ya! :3"</p>
+                </div>
+            </div>
+            
+            <div class="notification-button">
+                <button id="redirectButton">OKE, LANJUTKAN</button>
+            </div>
+            
+            <div class="countdown">
+                <p>Otomatis redirect dalam: <span id="countdown">10</span> detik</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const redirectButton = document.getElementById('redirectButton');
+            const countdownElement = document.getElementById('countdown');
+            let countdown = 10;
+            let countdownInterval;
+            
+            // Fungsi untuk mengarahkan ke URL baru
+            function redirect() {
+                window.location.href = 'https://omomokiweb.sytes.net';
+            }
+            
+            // Fungsi untuk memulai countdown
+            function startCountdown() {
+                countdownInterval = setInterval(function() {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        redirect();
+                    }
+                }, 1000);
+            }
+            
+            // Event listener untuk tombol
+            redirectButton.addEventListener('click', function() {
+                clearInterval(countdownInterval);
+                redirect();
+            });
+            
+            // Memulai countdown
+            startCountdown();
+        });
+    </script>
+</body>
+</html>
